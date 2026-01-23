@@ -1,4 +1,4 @@
-## Interface: 120001, 120000, 110207, 50503, 30405, 20505, 11508
+## Interface: 120001, 120000
 ## Author: Giovanni Cavallo "z0fa"
 ## Version: @project-version@
 ## Title: DockedDamageMeter
