@@ -5,8 +5,8 @@
 ## IconTexture: Interface\AddOns\DockedDamageMeter\icon.jpg
 ## SavedVariables: DockedDamageMeterGlobalDB
 ## SavedVariablesPerCharacter: DockedDamageMeterCharacterDB
-## X-Wago-ID: 7nGv2eGx
-## X-Curse-Project-ID: 504658
+## X-Wago-ID: n6VLLQGd
+## X-Curse-Project-ID: 1442282
 
 libs/array.lua
 libs/addon.lua
