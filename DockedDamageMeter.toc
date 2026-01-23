@@ -1,0 +1,14 @@
+## Interface: 120001, 120000, 110207, 50503, 30405, 20505, 11508
+## Author: Giovanni Cavallo "z0fa"
+## Version: @project-version@
+## Title: DockedDamageMeter
+## IconTexture: Interface\AddOns\DockedDamageMeter\icon.jpg
+## SavedVariables: DockedDamageMeterGlobalDB
+## SavedVariablesPerCharacter: DockedDamageMeterCharacterDB
+## X-Wago-ID: 7nGv2eGx
+## X-Curse-Project-ID: 504658
+
+libs/array.lua
+libs/addon.lua
+
+src/main.lua
