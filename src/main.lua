@@ -38,6 +38,12 @@ useEvent(
       end, "OnHide", "secure-widget", ChatFrame2
     )
 
+    useHook(
+      function()
+        module.toggle(DamageMeter:IsEditing() or ChatFrame2:IsShown())
+      end, "UpdateShownState", "secure-function", DamageMeter
+    )
+
     nextTick(
       function()
         module.toggle(ChatFrame2:IsShown())
