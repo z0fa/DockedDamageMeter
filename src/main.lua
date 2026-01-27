@@ -3,56 +3,49 @@ local __namespace, __module = ...
 local Array = __module.Array --- @class Array
 local Addon = __module.Addon --- @class Addon
 
-local nextTick = Addon.nextTick
-local useEvent = Addon.useEvent
 local useHook = Addon.useHook
+local onReady = Addon.onReady
 
 local module = {}
+local initialized = false
 
-local combatLogReady = C_AddOns.IsAddOnLoaded("Blizzard_CombatLog")
-local damageMeterReady = C_AddOns.IsAddOnLoaded("Blizzard_DamageMeter")
-
-useEvent(
-  function(context, evetName, addonName)
-    combatLogReady = combatLogReady or addonName == "Blizzard_CombatLog"
-    damageMeterReady = damageMeterReady or addonName == "Blizzard_DamageMeter"
-
-    if not (combatLogReady and damageMeterReady) then
-      return
-    end
-
-    module.disableFrame(CombatLogQuickButtonFrame_Custom)
-    module.disableFrame(ChatFrame2.FontStringContainer)
-    module.disableFrame(ChatFrame2.ScrollBar)
-    module.disableFrame(ChatFrame2.ScrollToBottomButton)
-
-    useHook(
-      function()
-        module.toggle(true)
-      end, "OnShow", "secure-widget", ChatFrame2
-    )
-
-    useHook(
-      function()
-        module.toggle(false)
-      end, "OnHide", "secure-widget", ChatFrame2
-    )
-
-    useHook(
-      function()
-        module.toggle(DamageMeter:IsEditing() or ChatFrame2:IsShown())
-      end, "UpdateShownState", "secure-function", DamageMeter
-    )
-
-    nextTick(
-      function()
-        module.toggle(ChatFrame2:IsShown())
-      end
-    )
-
-    context.unsub()
-  end, { "ADDON_LOADED" }
+onReady(
+  function(isLogin, isReload)
+    module.init()
+    module.toggle(ChatFrame2:IsShown())
+  end
 )
+
+function module.init()
+  if initialized then
+    return
+  end
+
+  useHook(
+    function()
+      module.toggle(true)
+    end, "OnShow", "secure-widget", ChatFrame2
+  )
+
+  useHook(
+    function()
+      module.toggle(false)
+    end, "OnHide", "secure-widget", ChatFrame2
+  )
+
+  useHook(
+    function()
+      module.toggle(DamageMeter:IsEditing() or ChatFrame2:IsShown())
+    end, "UpdateShownState", "secure-function", DamageMeter
+  )
+
+  module.disableFrame(CombatLogQuickButtonFrame_Custom)
+  module.disableFrame(ChatFrame2.FontStringContainer)
+  module.disableFrame(ChatFrame2.ScrollBar)
+  module.disableFrame(ChatFrame2.ScrollToBottomButton)
+
+  initialized = true
+end
 
 function module.disableFrame(frame)
   useHook(

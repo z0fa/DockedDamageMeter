@@ -8,6 +8,7 @@ local module = {} --- @class Addon
 
 local frame = CreateFrame("Frame", nil)
 local onLoadHooks = Array.new()
+local onReadyHooks = Array.new()
 local onUpdateHooks = Array.new()
 local debugValues = {} --- @type table<string, any>
 local listeners = {} --- @type table<WowEvent, Array>
@@ -233,15 +234,21 @@ function module.print(msg)
 end
 
 --- comment
---- @param fn function
+--- @param fn fun()
 function module.onLoad(fn)
   onLoadHooks:push(fn)
 end
 
 --- comment
---- @param fn function
+--- @param fn fun()
 function module.onInit(fn)
   fn()
+end
+
+--- comment
+--- @param fn fun(isLogin: boolean, isReload: boolean)
+function module.onReady(fn)
+  onReadyHooks:push(fn)
 end
 
 --- comment
@@ -300,6 +307,18 @@ module.useEvent(
       )
     end
   end, { "ADDON_LOADED" }
+)
+
+module.useEvent(
+  function(context, eventName, ...)
+    local args = { ... }
+
+    onReadyHooks:forEach(
+      function(fn)
+        fn(unpack(args))
+      end
+    )
+  end, { "PLAYER_ENTERING_WORLD" }
 )
 
 module.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
