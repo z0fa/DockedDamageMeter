@@ -13,26 +13,41 @@ local onUpdateHooks = Array.new()
 local debugValues = {} --- @type table<string, any>
 local listeners = {} --- @type table<WowEvent, Array>
 
---- @class SavedVariableRef
---- @field ref Ref
+--- @class SavedVariableRef: Ref
 --- @field globalName string
 --- @field varName string
 --- @field defaultValue unknown
 
 --- comment
---- @param globalName string
 --- @param varName string
 --- @param defaultValue unknown
+--- @param perCharacter? boolean
 --- @return SavedVariableRef
-function module.useSavedVariable(globalName, varName, defaultValue)
+function module.useSavedVariable(varName, defaultValue, perCharacter)
+  local scope = perCharacter and "Character" or "Global"
+  local globalName = __namespace .. scope .. "DB"
   local state = ref(defaultValue)
 
-  local toRet = {
-    ref = state,
-    globalName = globalName,
-    varName = varName,
-    defaultValue = defaultValue,
-  }
+  local toRet = setmetatable(
+    {}, {
+      __index = function(t, k)
+        if k == "globalName" then
+          return globalName
+        elseif k == "varName" then
+          return varName
+        elseif k == "defaultValue" then
+          return defaultValue
+        elseif k == "perCharacter" then
+          return perCharacter == true
+        else
+          return state[k]
+        end
+      end,
+      __newindex = function(t, k, v)
+        state[k] = v
+      end,
+    }
+  )
 
   module.onLoad(
     function()
@@ -47,9 +62,9 @@ function module.useSavedVariable(globalName, varName, defaultValue)
   )
 
   watch(
-    toRet.ref, function(newValue, oldValue)
+    toRet, function(newValue, oldValue)
       _G[globalName][varName] = newValue
-    end, { immediate = true }
+    end
   )
 
   return toRet
