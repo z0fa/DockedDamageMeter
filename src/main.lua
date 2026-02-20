@@ -1,8 +1,6 @@
 local __namespace, __module = ...
-
 local Array = __module.Array --- @class Array
 local Addon = __module.Addon --- @class Addon
-
 local useHook = Addon.useHook
 local onReady = Addon.onReady
 

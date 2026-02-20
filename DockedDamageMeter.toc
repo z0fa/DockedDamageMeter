@@ -5,6 +5,7 @@
 ## IconTexture: Interface\AddOns\DockedDamageMeter\icon.jpg
 ## SavedVariables: DockedDamageMeterGlobalDB
 ## SavedVariablesPerCharacter: DockedDamageMeterCharacterDB
+## X-Settings-Version: 1
 ## X-Wago-ID: n6VLLQGd
 ## X-Curse-Project-ID: 1442282
 
