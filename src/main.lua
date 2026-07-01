@@ -19,22 +19,22 @@ function module.init()
     return
   end
 
-  useHook(
+  useHook("OnShow", "secure-widget", ChatFrame2).apply(
     function()
       module.toggle(true)
-    end, "OnShow", "secure-widget", ChatFrame2
+    end
   )
 
-  useHook(
+  useHook("OnHide", "secure-widget", ChatFrame2).apply(
     function()
       module.toggle(false)
-    end, "OnHide", "secure-widget", ChatFrame2
+    end
   )
 
-  useHook(
+  useHook("UpdateShownState", "secure-function", DamageMeter).apply(
     function()
       module.toggle(DamageMeter:IsEditing() or ChatFrame2:IsShown())
-    end, "UpdateShownState", "secure-function", DamageMeter
+    end
   )
 
   module.disableFrame(CombatLogQuickButtonFrame_Custom)
@@ -46,10 +46,10 @@ function module.init()
 end
 
 function module.disableFrame(frame)
-  useHook(
+  useHook("OnShow", "secure-widget", frame).apply(
     function()
       frame:Hide()
-    end, "OnShow", "secure-widget", frame
+    end
   )
 
   frame:Hide()
@@ -58,8 +58,8 @@ end
 function module.toggle(value)
   DamageMeter:ClearAllPoints()
   DamageMeter:SetFrameStrata("MEDIUM")
-  DamageMeter:SetPoint("BOTTOMLEFT", ChatFrame2Background, -14, -4)
-  DamageMeter:SetPoint("TOPRIGHT", ChatFrame2Background, 14, 0)
+  DamageMeter:SetPoint("BOTTOMLEFT", ChatFrame2Background, -2, -4)
+  DamageMeter:SetPoint("TOPRIGHT", ChatFrame2Background, 2, 0)
   DamageMeter:SetShown(value)
 end
 
